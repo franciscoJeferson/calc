@@ -1,0 +1,36 @@
+.inner-alerts {
+  position: fixed;
+  bottom: 5px;
+  z-index: 100;
+  width: 80%;
+  left: 10%;
+  height: auto;
+}
+
+.calculator__button {
+  background-color: rgb(240, 240, 240);
+  font-size: 25px;
+}
+
+.scientific {
+  display: none;
+}
+
+@media (orientation: landscape) {
+  .scientific {
+    display: flex;
+  }
+}
+
+.ripples {
+  --rp-size: 20;
+  --rp-color: rgba(0, 0, 0, 0.2);
+  --rp-transition: 200;
+  position: relative;
+  overflow: hidden;
+}
+
+
+[data-math-container="2"] {
+  display: none;
+}
