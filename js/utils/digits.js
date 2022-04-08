@@ -24,7 +24,11 @@ import {
         utils.alert('Não é possível inserir mais de 15 dígitos.')
       } else if (utils.tenDigitsDecimal(data.expression[last_position])) {
         utils.alert('jjsj')
-      } else if (conditionOne && data.expression[last_position]
+      } else if(data.isResult && number === '0') {
+        data.expression = ['0']
+        data.expression_display = ['0']
+      }
+      else if (conditionOne && data.expression[last_position]
         .search(utils.percentage_parentheses_end) > -1 || isPiOrE(last_position)) {
         data.expression.push('*')
         data.expression.push(number)
@@ -42,6 +46,7 @@ import {
           data.expression_display[last_position] += number
         }
       }
+      data.isResult = false
       utils.calculate()
       utils.formatt()
     },

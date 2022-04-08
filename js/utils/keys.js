@@ -33,6 +33,7 @@ import {
       data.expression.push('(')
       data.expression_display.push('(')
     }
+    data.isResult = false
   }
   const percentage = (last_position) => {
     if (data.expression[last_position] !== '') {
@@ -43,6 +44,7 @@ import {
         data.expression_display.push('%')
       }
     }
+    data.isResult = false
   }
   const backspace = (last_position) => {
     const condition = !isNaN(Number(data.expression[last_position]))
@@ -68,12 +70,18 @@ import {
         data.expression_display[0] = ''
       }
     }
+    data.isResult = false
   }
   const allClear = () => {
     data.expression = ['']
     data.expression_display = ['']
+    data.isResult = false
   }
   const comma = (last_position) => {
+    if (data.isResult) {
+      data.expression = ['']
+      data.expression_display = ['']
+    }
     if (data.expression[0] === '') {
       data.expression[last_position] += '0.'
       data.expression_display[last_position] += '0.'
@@ -84,53 +92,45 @@ import {
       data.expression[last_position] += '.'
       data.expression_display[last_position] += '.'
     }
+    data.isResult = false
   }
-  const equals = () => {
-    console.log('eldjd')
-    console.log(expression_display)
-    display_result.animate([{
-      opacity: '1'
+  export default {
+    keys(key) {
+      const last_position = data.expression.length - 1
+      if (key === 'parentheses') {
+        parentheses(last_position)
+      } else if (key === 'percentage') {
+        percentage(last_position)
+      } else if (key === 'backspace') {
+        backspace(last_position)
+      } else if (key === 'allClear') {
+        allClear()
+      } else if (key === 'comma') {
+        comma(last_position)
+      } else if (key === 'equals') {
+        data.isResult = true
+      }
+      utils.calculate()
+      utils.formatt()
     },
-      {
-        opacity: '0'
-      }], {
-      duration: 200, fill: 'forwards'
-    })
-    expression_display.animate([{
-      opacity: '1'
-    },
-      {
-        opacity: '0'
-      }], {
-      duration: 200, fill: 'forwards'
-    })
-    setTimeout(() => {
-      expression_display.animate([{
-        opacity: '0'
-      },
-        {
-          opacity: '1'
-        }], {
-        duration: 200, fill: 'forwards'
-      })
-    }, 200)
-    data.isResult = true
-  }
-  export default (key) => {
-    const last_position = data.expression.length - 1
-    if (key === 'parentheses') {
-      parentheses(last_position)
-    } else if (key === 'percentage') {
-      percentage(last_position)
-    } else if (key === 'backspace') {
-      backspace(last_position)
-    } else if (key === 'allClear') {
-      allClear()
-    } else if (key === 'comma') {
-      comma(last_position)
-    } else if (key === 'equals') {
-      equals()
+    equals() {
+      if (data.isResult && data.result !== '') {
+        data.expression = ['']
+        data.expression_display = ['']
+        data.expression[0] = data.result
+        data.expression_display[0] = data.result
+        data.result = ''
+        expression_display.animate([{
+          opacity: '0'
+        },
+          {
+            opacity: '1'
+          }], {
+          duration: 200, fill: 'forwards'
+        })
+        expression_display.style.color = '#30835c'
+      } else {
+        expression_display.style.color = '#000000'
+      }
     }
-    utils.calculate()
-    utils.formatt()
   }

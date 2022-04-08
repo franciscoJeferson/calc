@@ -35,7 +35,7 @@ import {
         } else if (target.dataset.click === 'operator') {
           operators.operators(target.dataset.value)
         } else if (target.dataset.click === 'key') {
-          keys(target.dataset.value)
+          keys.keys(target.dataset.value)
         } else if (target.dataset.click === 'math') {
           math(target.dataset.value)
         } else if (target.dataset.click === 'utils') {
